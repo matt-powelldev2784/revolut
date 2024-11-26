@@ -29,7 +29,6 @@ Build app with Vite, React, TypeScript, TailwindCSS using template form Vite Com
 
 
 
-
 ## Task Details
 
 * The task instructions are available here: https://firebasestorage.googleapis.com/v0/b/klets-3642/o/user_files%2F1NrIfECa%2F054481cb580d4ec0b3bc24a5c8cc3b78%2FFrontend%20Development%20Home%20Task%20-%20Revolut.pdf?alt=media&token=ba193e3d-29a7-4d5e-a230-2261eae67a85
