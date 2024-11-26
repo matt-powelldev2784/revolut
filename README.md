@@ -1,80 +1,35 @@
-![reactjs-vite-tailwindcss-boilerplate](https://user-images.githubusercontent.com/16243531/217138979-b854309c-4742-4275-a705-f9fec5158217.jpg)
+# Flipdish Menu Task
 
-# React Tailwindcss Boilerplate build with Vite
+## To get started
+1. Clone this repository
+2. Run npm install
+3. Run npm run dev
+4. Open http://localhost:5173/ in your browser
 
-This is a boilerplate build with Vite, React 18, TypeScript, Vitest, Testing Library, TailwindCSS 3, Eslint and Prettier.
+## Deployed App
+* Deployed app can be accessed using the following link:
+ADD_LINK_HERE
 
-## What is inside?
+## To run tests
+* End to end tests implemented with playwright. Run npx playwright test from the command line.
+* Unit tests implemented with Vitest and React Testing Library. Run npm run test from the command line.
 
-This project uses many tools like:
+## My approach
+Build app with Vite, React, TypeScript, TailwindCSS using template form Vite Community.
 
-- [Vite](https://vitejs.dev)
-- [ReactJS](https://reactjs.org)
-- [TypeScript](https://www.typescriptlang.org)
-- [Vitest](https://vitest.dev)
-- [Testing Library](https://testing-library.com)
-- [Tailwindcss](https://tailwindcss.com)
-- [Eslint](https://eslint.org)
-- [Prettier](https://prettier.io)
+* Create app with single page which displays initial account balances and exchange form section below.
+* Create 3 pockets / wallets with initial balances of 50
+* Use axios to make api calls
+* Use freecurrencyapi.com to get exchange rates which allows for 10 free requests per minute and 5000 requests per month
+* Poll exchange api every 10 seconds
+* Use React Hook Form for form validation
+* the input should on accept numbers with 2 decimal places
+* allow exchange between pockets / wallets
+* display exchange rates and pocket balances
 
-## Getting Started
 
-### Install
 
-Create the project.
 
-```bash
-pnpm dlx degit joaopaulomoraes/reactjs-vite-tailwindcss-boilerplate my-app
-```
+## Task Details
 
-Access the project directory.
-
-```bash
-cd my-app
-```
-
-Install dependencies.
-
-```bash
-pnpm install
-```
-
-Serve with hot reload at <http://localhost:5173>.
-
-```bash
-pnpm run dev
-```
-
-### Lint
-
-```bash
-pnpm run lint
-```
-
-### Typecheck
-
-```bash
-pnpm run typecheck
-```
-
-### Build
-
-```bash
-pnpm run build
-```
-
-### Test
-
-```bash
-pnpm run test
-```
-
-View and interact with your tests via UI.
-
-```bash
-pnpm run test:ui
-```
-
-## License
-
-This project is licensed under the MIT License.
+* The task instructions are available here: https://firebasestorage.googleapis.com/v0/b/klets-3642/o/user_files%2F1NrIfECa%2F054481cb580d4ec0b3bc24a5c8cc3b78%2FFrontend%20Development%20Home%20Task%20-%20Revolut.pdf?alt=media&token=ba193e3d-29a7-4d5e-a230-2261eae67a85
