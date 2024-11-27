@@ -6,7 +6,6 @@ import {
   Dispatch,
   SetStateAction
 } from 'react'
-
 interface AppContext {
   eurBalance: number
   setEurBalance: Dispatch<SetStateAction<number>>

@@ -4,12 +4,12 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-type WalletType = 'GBP' | 'USD' | 'EUR'
+type CurrencyType = 'GBP' | 'USD' | 'EUR'
 
 interface FormSchema {
-  fromWallet: WalletType
+  fromWallet: CurrencyType
   fromAmount: number
-  toWallet: WalletType
+  toWallet: CurrencyType
   toAmount: number
 }
 
@@ -17,12 +17,12 @@ const formsSchema = yup.object().shape({
   fromWallet: yup
     .string()
     .matches(/(GBP|USD|EUR)/)
-    .required() as yup.Schema<WalletType>,
+    .required() as yup.Schema<CurrencyType>,
   fromAmount: yup.number().required(),
   toWallet: yup
     .string()
     .matches(/(GBP|USD|EUR)/)
-    .required() as yup.Schema<WalletType>,
+    .required() as yup.Schema<CurrencyType>,
   toAmount: yup.number().required()
 })
 
