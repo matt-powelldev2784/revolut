@@ -14,6 +14,7 @@ interface AppContext {
   setGbpBalance: Dispatch<SetStateAction<number>>
   usdBalance: number
   setUsdBalance: Dispatch<SetStateAction<number>>
+  currencyTypes: string[]
 }
 
 export const AppContext = createContext<AppContext | undefined>(undefined)
@@ -30,6 +31,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [eurBalance, setEurBalance] = useState(50)
   const [gbpBalance, setGbpBalance] = useState(50)
   const [usdBalance, setUsdBalance] = useState(50)
+  const currencyTypes = ['EUR', 'GBP', 'USD']
 
   return (
     <AppContext.Provider
@@ -39,7 +41,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
         gbpBalance,
         setGbpBalance,
         usdBalance,
-        setUsdBalance
+        setUsdBalance,
+        currencyTypes
       }}
     >
       {children}
