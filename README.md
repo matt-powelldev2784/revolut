@@ -1,4 +1,4 @@
-# Flipdish Menu Task
+# Revolut Currency Exchange Task
 
 ## To get started
 1. Clone this repository
