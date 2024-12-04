@@ -3,14 +3,15 @@ import revolutLogo from '../assets/revolut_logo.svg'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { ChangeEvent, useState } from 'react'
 
 type CurrencyType = 'GBP' | 'USD' | 'EUR'
 
 interface FormSchema {
   fromWallet: CurrencyType
-  fromAmount: number
+  fromAmount: string
   toWallet: CurrencyType
-  toAmount: number
+  toAmount: string
 }
 
 const formsSchema = yup.object().shape({
@@ -18,27 +19,47 @@ const formsSchema = yup.object().shape({
     .string()
     .matches(/(GBP|USD|EUR)/)
     .required() as yup.Schema<CurrencyType>,
-  fromAmount: yup.number().required(),
+  fromAmount: yup.string().required(),
   toWallet: yup
     .string()
     .matches(/(GBP|USD|EUR)/)
     .required() as yup.Schema<CurrencyType>,
-  toAmount: yup.number().required()
+  toAmount: yup.string().required()
 })
 
 const App = () => {
+  const [savedFromAmount, setSavedFromAmount] = useState('0.00')
+  const [savedToAmount, setSavedToAmount] = useState('0.00')
   const { usdBalance, gbpBalance, eurBalance, currencyTypes } = useAppContext()
 
-  const { register, handleSubmit } = useForm<FormSchema>({
+  const { register, setValue, handleSubmit } = useForm<FormSchema>({
     defaultValues: {
       fromWallet: 'GBP',
-      fromAmount: 0,
+      fromAmount: savedFromAmount,
       toWallet: 'EUR',
-      toAmount: 0
+      toAmount: savedToAmount
     },
     resolver: yupResolver(formsSchema)
   })
   const handleRegistration = (data: FormSchema) => console.log(data)
+
+  const onChangeFromAmount = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value)
+    if (isNaN(value)) return setValue('fromAmount', savedFromAmount)
+
+    const valueWithTwoDecimalPlaces = value.toFixed(2)
+    setSavedFromAmount(valueWithTwoDecimalPlaces)
+    setValue('fromAmount', valueWithTwoDecimalPlaces)
+  }
+
+  const onChangeToAmount = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value)
+    if (isNaN(value)) return setValue('toAmount', savedToAmount)
+
+    const valueWithTwoDecimalPlaces = value.toFixed(2)
+    setSavedToAmount(valueWithTwoDecimalPlaces)
+    setValue('toAmount', valueWithTwoDecimalPlaces)
+  }
 
   return (
     <main className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-white">
@@ -82,6 +103,7 @@ const App = () => {
           <input
             className="h-10 w-[200px] border-2 border-black p-2"
             {...register('fromAmount')}
+            onChange={onChangeFromAmount}
           />
         </div>
 
@@ -104,6 +126,7 @@ const App = () => {
           <input
             className="h-10 w-[200px] border-2 border-black p-2"
             {...register('toAmount')}
+            onChange={onChangeToAmount}
           />
         </div>
 
