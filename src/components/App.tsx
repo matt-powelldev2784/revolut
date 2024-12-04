@@ -43,6 +43,7 @@ const App = () => {
 
   const onChangeFromAmount = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value)
+    // if value cannot be converted to number return previously saved number
     if (isNaN(value)) return setValue('fromAmount', savedFromAmount)
 
     const valueWithTwoDecimalPlaces = value.toFixed(2)
@@ -52,6 +53,7 @@ const App = () => {
 
   const onChangeToAmount = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value)
+    // if value cannot be converted to number return previously saved number
     if (isNaN(value)) return setValue('toAmount', savedToAmount)
 
     const valueWithTwoDecimalPlaces = value.toFixed(2)
