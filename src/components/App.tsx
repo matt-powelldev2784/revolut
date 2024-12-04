@@ -1,11 +1,9 @@
-import { useAppContext } from 'context/AppContext'
+import { CurrencyType, useAppContext } from 'context/AppContext'
 import revolutLogo from '../assets/revolut_logo.svg'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ChangeEvent, useState } from 'react'
-
-type CurrencyType = 'GBP' | 'USD' | 'EUR'
 
 interface FormSchema {
   fromWallet: CurrencyType

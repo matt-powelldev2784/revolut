@@ -6,6 +6,8 @@ import {
   Dispatch,
   SetStateAction
 } from 'react'
+
+export type CurrencyType = 'GBP' | 'USD' | 'EUR'
 interface AppContext {
   eurBalance: number
   setEurBalance: Dispatch<SetStateAction<number>>
@@ -30,7 +32,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const [eurBalance, setEurBalance] = useState(50)
   const [gbpBalance, setGbpBalance] = useState(50)
   const [usdBalance, setUsdBalance] = useState(50)
-  const currencyTypes = ['EUR', 'GBP', 'USD']
+  const currencyTypes: CurrencyType[] = ['EUR', 'GBP', 'USD']
 
   return (
     <AppContext.Provider
