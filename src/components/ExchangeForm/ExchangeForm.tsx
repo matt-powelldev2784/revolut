@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ChangeEvent, useState } from 'react'
-import { getRates } from 'utils/getRates'
+import { useRatesInterval } from './hooks/useRatesInterval'
 
 interface FormSchema {
   fromWallet: CurrencyType
@@ -29,7 +29,8 @@ export const ExchangeForm = () => {
   const [savedFromAmount, setSavedFromAmount] = useState('0.00')
   const [savedToAmount, setSavedToAmount] = useState('0.00')
   const { currencyTypes } = useAppContext()
-  getRates({ baseCurrency: 'GBP', currencyTypes })
+  const { rates } = useRatesInterval()
+  console.log('rates---', rates)
 
   const { register, setValue, handleSubmit } = useForm<FormSchema>({
     defaultValues: {

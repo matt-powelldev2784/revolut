@@ -16,9 +16,9 @@ export const getRates = async ({ currencyTypes, baseCurrency }: getRates) => {
       `${urlPrefix}${apiKey}&base_currency=${baseCurrency}&currencies=${currencyTypesString}`
     )
     const rates = response.data.data
-    console.log('rates', rates)
     return rates
   } catch (error) {
     console.error(error)
+    return 'error'
   }
 }
