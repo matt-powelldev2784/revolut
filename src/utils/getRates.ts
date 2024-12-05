@@ -9,15 +9,11 @@ interface getRates {
 export const getRates = async ({ currencyTypes, baseCurrency }: getRates) => {
   const urlPrefix = 'https://api.freecurrencyapi.com/v1/latest?apikey='
   const apiKey = import.meta.env.VITE_FREE_CURRENCY_API_KEY
-  const currenciesForConversionString = currencyTypes
-    .filter((currencyType) => {
-      return currencyType !== baseCurrency
-    })
-    .join(',')
+  const currencyTypesString = currencyTypes.join(',')
 
   try {
     const response = await axios.get(
-      `${urlPrefix}${apiKey}&base_currency=${baseCurrency}&currencies=${currenciesForConversionString}`
+      `${urlPrefix}${apiKey}&base_currency=${baseCurrency}&currencies=${currencyTypesString}`
     )
     const rates = response.data.data
     console.log('rates', rates)

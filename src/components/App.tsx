@@ -1,6 +1,6 @@
 import revolutLogo from '../assets/revolut_logo.svg'
-import { AccountBalances } from './AccountBalances'
-import { ExchangeForm } from './ExchangeForm'
+import { AccountBalances } from './AccountBalances/AccountBalances'
+import { ExchangeForm } from './ExchangeForm/ExchangeForm'
 
 const App = () => {
   return (
