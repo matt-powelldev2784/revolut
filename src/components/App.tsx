@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ChangeEvent, useState } from 'react'
+import { AccountBalances } from './AccountBalances'
 
 interface FormSchema {
   fromWallet: CurrencyType
@@ -28,7 +29,7 @@ const formsSchema = yup.object().shape({
 const App = () => {
   const [savedFromAmount, setSavedFromAmount] = useState('0.00')
   const [savedToAmount, setSavedToAmount] = useState('0.00')
-  const { usdBalance, gbpBalance, eurBalance, currencyTypes } = useAppContext()
+  const { currencyTypes } = useAppContext()
 
   const { register, setValue, handleSubmit } = useForm<FormSchema>({
     defaultValues: {
@@ -65,20 +66,7 @@ const App = () => {
     <main className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-white">
       <img src={revolutLogo} alt="Revolut Logo" className="m-2" />
 
-      <section className="flex flex-col items-center">
-        <h1 className="text-lg font-bold">Account Balances</h1>
-        <div className="flex flex-row text-lg">
-          <p className="mx-4">
-            EUR: <span className="text-blue-600">€{eurBalance}</span>
-          </p>
-          <p className="mx-4">
-            GBP: <span className="text-blue-600">€{gbpBalance}</span>
-          </p>
-          <p className="mx-4">
-            USD: <span className="text-blue-600">${usdBalance}</span>
-          </p>
-        </div>
-      </section>
+      <AccountBalances />
 
       <form
         onSubmit={handleSubmit(handleRegistration)}
