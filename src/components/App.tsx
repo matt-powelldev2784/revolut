@@ -1,68 +1,140 @@
-import Avatar from 'components/Avatar'
-import logo from 'assets/logo.svg'
+import { CurrencyType, useAppContext } from 'context/AppContext'
+import revolutLogo from '../assets/revolut_logo.svg'
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { ChangeEvent, useState } from 'react'
 
-const randoms = [
-  [1, 2],
-  [3, 4, 5],
-  [6, 7]
-]
+interface FormSchema {
+  fromWallet: CurrencyType
+  fromAmount: string
+  toWallet: CurrencyType
+  toAmount: string
+}
 
-function App() {
+const formsSchema = yup.object().shape({
+  fromWallet: yup
+    .string()
+    .matches(/(GBP|USD|EUR)/)
+    .required() as yup.Schema<CurrencyType>,
+  fromAmount: yup.string().required(),
+  toWallet: yup
+    .string()
+    .matches(/(GBP|USD|EUR)/)
+    .required() as yup.Schema<CurrencyType>,
+  toAmount: yup.string().required()
+})
+
+const App = () => {
+  const [savedFromAmount, setSavedFromAmount] = useState('0.00')
+  const [savedToAmount, setSavedToAmount] = useState('0.00')
+  const { usdBalance, gbpBalance, eurBalance, currencyTypes } = useAppContext()
+
+  const { register, setValue, handleSubmit } = useForm<FormSchema>({
+    defaultValues: {
+      fromWallet: 'GBP',
+      fromAmount: savedFromAmount,
+      toWallet: 'EUR',
+      toAmount: savedToAmount
+    },
+    resolver: yupResolver(formsSchema)
+  })
+  const handleRegistration = (data: FormSchema) => console.log(data)
+
+  const onChangeFromAmount = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value)
+    // if value cannot be converted to number return previously saved number
+    if (isNaN(value)) return setValue('fromAmount', savedFromAmount)
+
+    const valueWithTwoDecimalPlaces = value.toFixed(2)
+    setSavedFromAmount(valueWithTwoDecimalPlaces)
+    setValue('fromAmount', valueWithTwoDecimalPlaces)
+  }
+
+  const onChangeToAmount = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value)
+    // if value cannot be converted to number return previously saved number
+    if (isNaN(value)) return setValue('toAmount', savedToAmount)
+
+    const valueWithTwoDecimalPlaces = value.toFixed(2)
+    setSavedToAmount(valueWithTwoDecimalPlaces)
+    setValue('toAmount', valueWithTwoDecimalPlaces)
+  }
+
   return (
-    <div className="relative overflow-hidden bg-white">
-      <div className="h-screen sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
-        <div className="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
-          <div className="sm:max-w-lg">
-            <div className="my-4">
-              <Avatar size="large" src={logo} />
-            </div>
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Welcome!
-            </h1>
-            <p className="mt-4 text-xl text-gray-500">
-              This is a boilerplate build with Vite, React 18, TypeScript,
-              Vitest, Testing Library, TailwindCSS 3, Eslint and Prettier.
-            </p>
-          </div>
-          <div className="my-10">
-            <a
-              href="vscode://"
-              className="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-center font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-offset-2"
-            >
-              Start building for free
-            </a>
-            <div
-              aria-hidden="true"
-              className="pointer-events-none mt-10 md:mt-0 lg:absolute lg:inset-y-0 lg:mx-auto lg:w-full lg:max-w-7xl"
-            >
-              <div className="absolute sm:left-1/2 sm:top-0 sm:translate-x-8 lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
-                <div className="flex items-center space-x-6 lg:space-x-8">
-                  {randoms.map((random, number) => (
-                    <div
-                      key={`random-${random[number]}`}
-                      className="grid shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8"
-                    >
-                      {random.map((number) => (
-                        <div
-                          key={`random-${number}`}
-                          className="h-64 w-44 overflow-hidden rounded-lg sm:opacity-0 lg:opacity-100"
-                        >
-                          <img
-                            src={`https://picsum.photos/600?random=${number}`}
-                            alt=""
-                            className="size-full bg-indigo-100 object-cover object-center"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+    <main className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-white">
+      <img src={revolutLogo} alt="Revolut Logo" className="m-2" />
+
+      <section className="flex flex-col items-center">
+        <h1 className="text-lg font-bold">Account Balances</h1>
+        <div className="flex flex-row text-lg">
+          <p className="mx-4">
+            EUR: <span className="text-blue-600">€{eurBalance}</span>
+          </p>
+          <p className="mx-4">
+            GBP: <span className="text-blue-600">€{gbpBalance}</span>
+          </p>
+          <p className="mx-4">
+            USD: <span className="text-blue-600">${usdBalance}</span>
+          </p>
         </div>
-      </div>
-    </div>
+      </section>
+
+      <form
+        onSubmit={handleSubmit(handleRegistration)}
+        className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4  pt-4"
+      >
+        <div className="flex flex-row items-center justify-center gap-4">
+          <label className="hidden">From Wallet</label>
+          <select className="h-10 w-[80px] p-2" {...register('fromWallet')}>
+            {currencyTypes.map((currencyType) => {
+              return (
+                <option
+                  key={currencyType}
+                  value={currencyType}
+                  className="w-40"
+                >
+                  {currencyType}
+                </option>
+              )
+            })}
+          </select>
+          -
+          <input
+            className="h-10 w-[200px] border-2 border-black p-2"
+            {...register('fromAmount')}
+            onChange={onChangeFromAmount}
+          />
+        </div>
+
+        <div className="flex flex-row items-center justify-center gap-4">
+          <label className="hidden">From Wallet</label>
+          <select className="h-10 w-[80px] p-2" {...register('toWallet')}>
+            {currencyTypes.map((currencyType) => {
+              return (
+                <option
+                  key={currencyType}
+                  value={currencyType}
+                  className="w-40"
+                >
+                  {currencyType}
+                </option>
+              )
+            })}
+          </select>
+          -
+          <input
+            className="h-10 w-[200px] border-2 border-black p-2"
+            {...register('toAmount')}
+            onChange={onChangeToAmount}
+          />
+        </div>
+
+        <button className="h-10 w-[300px] rounded-xl bg-blue-600 text-xl text-white">
+          Exchange
+        </button>
+      </form>
+    </main>
   )
 }
 

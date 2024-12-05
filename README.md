@@ -1,4 +1,4 @@
-# Flipdish Menu Task
+# Revolut Currency Exchange Task
 
 ## To get started
 1. Clone this repository
@@ -26,7 +26,6 @@ Build app with Vite, React, TypeScript, TailwindCSS using template form Vite Com
 * the input should on accept numbers with 2 decimal places
 * allow exchange between pockets / wallets
 * display exchange rates and pocket balances
-
 
 
 
