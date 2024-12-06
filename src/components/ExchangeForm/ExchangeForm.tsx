@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { ChangeEvent, useState } from 'react'
 import { useRatesInterval } from './hooks/useRatesInterval'
 import swapIcon from '../../assets/swap.svg'
+import errorIcon from '../../assets/error.svg'
 
 interface FormSchema {
   fromWallet: CurrencyType
@@ -26,12 +27,24 @@ const formsSchema = yup.object().shape({
   toAmount: yup.string().required()
 })
 
+const ErrorJsx = () => {
+  return (
+    <div className="m-8 flex flex-col items-center rounded-xl border-2 border-red-500 bg-red-100">
+      <img src={errorIcon} alt="error icon" className="m-2" />
+      <p className="px-4 pb-2">
+        An error has occurred when fetch the exchange rates
+      </p>
+    </div>
+  )
+}
+
 export const ExchangeForm = () => {
   const [baseCurrency, setBaseCurrency] = useState<CurrencyType>('GBP')
   const [savedFromAmount, setSavedFromAmount] = useState('0.00')
   const [savedToAmount, setSavedToAmount] = useState('0.00')
   const { currencyTypes } = useAppContext()
   const { rates } = useRatesInterval(baseCurrency)
+
   console.log('rates---', rates)
 
   const { register, setValue, handleSubmit, getValues } = useForm<FormSchema>({
@@ -64,6 +77,8 @@ export const ExchangeForm = () => {
     setSavedToAmount(valueWithTwoDecimalPlaces)
     setValue('toAmount', valueWithTwoDecimalPlaces)
   }
+
+  if (rates?.error) return <ErrorJsx />
 
   return (
     <form

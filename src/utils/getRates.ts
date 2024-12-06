@@ -1,9 +1,14 @@
-import axios from 'axios'
+import axios, { isAxiosError } from 'axios'
 import { CurrencyType } from 'context/AppContext'
 
 interface getRates {
   currencyTypes: CurrencyType[]
   baseCurrency: CurrencyType
+}
+
+export interface ApiResponse {
+  data?: object
+  error?: boolean
 }
 
 export const getRates = async ({ currencyTypes, baseCurrency }: getRates) => {
@@ -15,10 +20,12 @@ export const getRates = async ({ currencyTypes, baseCurrency }: getRates) => {
     const response = await axios.get(
       `${urlPrefix}${apiKey}&base_currency=${baseCurrency}&currencies=${currencyTypesString}`
     )
-    const rates = response.data.data
-    return rates
-  } catch (error) {
-    console.error(error)
-    return 'error'
+
+    const { data }: ApiResponse = response.data
+    return data
+    //
+  } catch (error: unknown) {
+    if (!isAxiosError(error)) return
+    return { error: true }
   }
 }

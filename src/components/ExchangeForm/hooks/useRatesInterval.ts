@@ -1,9 +1,9 @@
 import { CurrencyType, useAppContext } from 'context/AppContext'
 import { useEffect, useState } from 'react'
-import { getRates } from 'utils/getRates'
+import { ApiResponse, getRates } from 'utils/getRates'
 
 export const useRatesInterval = (baseCurrency: CurrencyType) => {
-  const [rates, setRates] = useState()
+  const [rates, setRates] = useState<ApiResponse>()
   const { currencyTypes } = useAppContext()
 
   useEffect(() => {
@@ -16,8 +16,6 @@ export const useRatesInterval = (baseCurrency: CurrencyType) => {
     }
 
     getRatesData()
-
-    // const intervalId = setInterval(getRatesData, 100000)
 
     return () => {
       clearTimeout(timeoutId)
