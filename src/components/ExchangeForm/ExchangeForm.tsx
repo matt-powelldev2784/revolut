@@ -78,8 +78,8 @@ export const ExchangeForm = () => {
     setValue('toAmount', valueWithTwoDecimalPlaces)
   }
 
-  if (rates?.error) return <ErrorJsx />
-  if (!rates) return <ErrorJsx />
+  if (!rates?.data) return <ErrorJsx />
+  if ('error' in rates) return <ErrorJsx />
 
   return (
     <form
