@@ -4,6 +4,7 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ChangeEvent, useState } from 'react'
 import { useRatesInterval } from './hooks/useRatesInterval'
+import swapIcon from '../../assets/swap.svg'
 
 interface FormSchema {
   fromWallet: CurrencyType
@@ -26,15 +27,16 @@ const formsSchema = yup.object().shape({
 })
 
 export const ExchangeForm = () => {
+  const [baseCurrency, setBaseCurrency] = useState<CurrencyType>('GBP')
   const [savedFromAmount, setSavedFromAmount] = useState('0.00')
   const [savedToAmount, setSavedToAmount] = useState('0.00')
   const { currencyTypes } = useAppContext()
-  const { rates } = useRatesInterval()
+  const { rates } = useRatesInterval(baseCurrency)
   console.log('rates---', rates)
 
-  const { register, setValue, handleSubmit } = useForm<FormSchema>({
+  const { register, setValue, handleSubmit, getValues } = useForm<FormSchema>({
     defaultValues: {
-      fromWallet: 'GBP',
+      fromWallet: baseCurrency,
       fromAmount: savedFromAmount,
       toWallet: 'EUR',
       toAmount: savedToAmount
@@ -65,8 +67,8 @@ export const ExchangeForm = () => {
 
   return (
     <form
-      onSubmit={handleSubmit(handleRegistration)}
       className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4  pt-4"
+      onSubmit={handleSubmit(handleRegistration)}
     >
       <div className="flex flex-row items-center justify-center gap-4">
         <label className="hidden">From Wallet</label>
@@ -86,6 +88,20 @@ export const ExchangeForm = () => {
           onChange={onChangeFromAmount}
         />
       </div>
+
+      <button
+        onClick={(e) => {
+          e.preventDefault()
+          const currentFromCurrency = getValues('fromWallet')
+          const currentToCurrency = getValues('toWallet')
+
+          setValue('fromWallet', currentToCurrency)
+          setValue('toWallet', currentFromCurrency)
+          setBaseCurrency(currentToCurrency)
+        }}
+      >
+        <img src={swapIcon} alt="swap icon" />
+      </button>
 
       <div className="flex flex-row items-center justify-center gap-4">
         <label className="hidden">From Wallet</label>
