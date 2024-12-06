@@ -79,6 +79,7 @@ export const ExchangeForm = () => {
   }
 
   if (rates?.error) return <ErrorJsx />
+  if (!rates) return <ErrorJsx />
 
   return (
     <form

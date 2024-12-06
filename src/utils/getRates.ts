@@ -7,7 +7,7 @@ interface getRates {
 }
 
 export interface ApiResponse {
-  data?: object
+  data?: { [K in CurrencyType]: number }
   error?: boolean
 }
 
@@ -21,7 +21,7 @@ export const getRates = async ({ currencyTypes, baseCurrency }: getRates) => {
       `${urlPrefix}${apiKey}&base_currency=${baseCurrency}&currencies=${currencyTypesString}`
     )
 
-    const { data }: ApiResponse = response.data
+    const data: ApiResponse = response.data
     return data
     //
   } catch (error: unknown) {

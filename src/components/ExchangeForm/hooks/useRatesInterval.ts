@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { ApiResponse, getRates } from 'utils/getRates'
 
 export const useRatesInterval = (baseCurrency: CurrencyType) => {
-  const [rates, setRates] = useState<ApiResponse>()
+  const [rates, setRates] = useState<ApiResponse | undefined>()
   const { currencyTypes } = useAppContext()
 
   useEffect(() => {
