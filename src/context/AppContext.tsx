@@ -15,7 +15,7 @@ interface AppContext {
   setGbpBalance: Dispatch<SetStateAction<number>>
   usdBalance: number
   setUsdBalance: Dispatch<SetStateAction<number>>
-  currencyTypes: string[]
+  currencyTypes: CurrencyType[]
 }
 
 export const AppContext = createContext<AppContext | undefined>(undefined)

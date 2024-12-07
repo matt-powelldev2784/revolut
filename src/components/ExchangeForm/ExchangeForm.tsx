@@ -3,6 +3,9 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ChangeEvent, useState } from 'react'
+import { useRatesInterval } from './hooks/useRatesInterval'
+import swapIcon from '../../assets/swap.svg'
+import errorIcon from '../../assets/error.svg'
 
 interface FormSchema {
   fromWallet: CurrencyType
@@ -24,14 +27,29 @@ const formsSchema = yup.object().shape({
   toAmount: yup.string().required()
 })
 
+const ErrorJsx = () => {
+  return (
+    <div className="m-8 flex flex-col items-center rounded-xl border-2 border-red-500 bg-red-100">
+      <img src={errorIcon} alt="error icon" className="m-2" />
+      <p className="px-4 pb-2">
+        An error has occurred when fetch the exchange rates
+      </p>
+    </div>
+  )
+}
+
 export const ExchangeForm = () => {
+  const [baseCurrency, setBaseCurrency] = useState<CurrencyType>('GBP')
   const [savedFromAmount, setSavedFromAmount] = useState('0.00')
   const [savedToAmount, setSavedToAmount] = useState('0.00')
   const { currencyTypes } = useAppContext()
+  const { rates } = useRatesInterval(baseCurrency)
 
-  const { register, setValue, handleSubmit } = useForm<FormSchema>({
+  console.log('rates---', rates)
+
+  const { register, setValue, handleSubmit, getValues } = useForm<FormSchema>({
     defaultValues: {
-      fromWallet: 'GBP',
+      fromWallet: baseCurrency,
       fromAmount: savedFromAmount,
       toWallet: 'EUR',
       toAmount: savedToAmount
@@ -60,11 +78,16 @@ export const ExchangeForm = () => {
     setValue('toAmount', valueWithTwoDecimalPlaces)
   }
 
+  if (!rates?.data) return <ErrorJsx />
+  if ('error' in rates) return <ErrorJsx />
+
   return (
     <form
-      onSubmit={handleSubmit(handleRegistration)}
       className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4  pt-4"
+      onSubmit={handleSubmit(handleRegistration)}
     >
+      <p className="text-xl font-bold">Move Money</p>
+
       <div className="flex flex-row items-center justify-center gap-4">
         <label className="hidden">From Wallet</label>
         <select className="h-10 w-[80px] p-2" {...register('fromWallet')}>
@@ -83,6 +106,20 @@ export const ExchangeForm = () => {
           onChange={onChangeFromAmount}
         />
       </div>
+
+      <button
+        onClick={(e) => {
+          e.preventDefault()
+          const currentFromCurrency = getValues('fromWallet')
+          const currentToCurrency = getValues('toWallet')
+
+          setValue('fromWallet', currentToCurrency)
+          setValue('toWallet', currentFromCurrency)
+          setBaseCurrency(currentToCurrency)
+        }}
+      >
+        <img src={swapIcon} alt="swap icon" />
+      </button>
 
       <div className="flex flex-row items-center justify-center gap-4">
         <label className="hidden">From Wallet</label>
