@@ -86,6 +86,8 @@ export const ExchangeForm = () => {
       className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4  pt-4"
       onSubmit={handleSubmit(handleRegistration)}
     >
+      <p className="text-xl font-bold">Move Money</p>
+
       <div className="flex flex-row items-center justify-center gap-4">
         <label className="hidden">From Wallet</label>
         <select className="h-10 w-[80px] p-2" {...register('fromWallet')}>
