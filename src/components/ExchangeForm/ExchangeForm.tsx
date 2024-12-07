@@ -43,9 +43,9 @@ export const ExchangeForm = () => {
   const [savedFromAmount, setSavedFromAmount] = useState('0.00')
   const [savedToAmount, setSavedToAmount] = useState('0.00')
   const { currencyTypes } = useAppContext()
-  const { rates } = useRatesInterval(baseCurrency)
+  const { currencyRates } = useRatesInterval(baseCurrency)
 
-  console.log('rates---', rates)
+  console.log('currencyRates---', currencyRates)
 
   const { register, setValue, handleSubmit, getValues } = useForm<FormSchema>({
     defaultValues: {
@@ -78,8 +78,8 @@ export const ExchangeForm = () => {
     setValue('toAmount', valueWithTwoDecimalPlaces)
   }
 
-  if (!rates?.data) return <ErrorJsx />
-  if ('error' in rates) return <ErrorJsx />
+  if (!Array.isArray(currencyRates)) return <ErrorJsx />
+  if ('error' in currencyRates) return <ErrorJsx />
 
   return (
     <form

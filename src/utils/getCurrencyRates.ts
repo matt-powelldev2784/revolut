@@ -5,13 +5,17 @@ interface getRates {
   currencyTypes: CurrencyType[]
   baseCurrency: CurrencyType
 }
-
-export interface ApiResponse {
-  data?: { [K in CurrencyType]: number }
-  error?: boolean
+interface CurrencyRate {
+  currency: CurrencyType
+  rate: number
 }
 
-export const getRates = async ({ currencyTypes, baseCurrency }: getRates) => {
+export type ApiResponse = CurrencyRate[] | { error: boolean } | undefined
+
+export const getCurrencyRates = async ({
+  currencyTypes,
+  baseCurrency
+}: getRates) => {
   const urlPrefix = 'https://api.freecurrencyapi.com/v1/latest?apikey='
   const apiKey = import.meta.env.VITE_FREE_CURRENCY_API_KEY
   const currencyTypesString = currencyTypes.join(',')
@@ -21,10 +25,17 @@ export const getRates = async ({ currencyTypes, baseCurrency }: getRates) => {
       `${urlPrefix}${apiKey}&base_currency=${baseCurrency}&currencies=${currencyTypesString}`
     )
 
-    const data: ApiResponse = response.data
-    return data
+    const data = response.data.data
+
+    const ratesArray = []
+    for (const [key, value] of Object.entries(data)) {
+      const rate = { currency: key, rate: value } as CurrencyRate
+      ratesArray.push(rate)
+    }
+
+    return ratesArray
     //
-  } catch (error: unknown) {
+  } catch (error) {
     if (!isAxiosError(error)) return
     return { error: true }
   }

@@ -1,17 +1,17 @@
 import { CurrencyType, useAppContext } from 'context/AppContext'
 import { useEffect, useState } from 'react'
-import { ApiResponse, getRates } from 'utils/getRates'
+import { ApiResponse, getCurrencyRates } from 'utils/getCurrencyRates'
 
 export const useRatesInterval = (baseCurrency: CurrencyType) => {
-  const [rates, setRates] = useState<ApiResponse | undefined>()
+  const [currencyRates, setCurrencyRates] = useState<ApiResponse>()
   const { currencyTypes } = useAppContext()
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout
 
     const getRatesData = async () => {
-      const ratesData = await getRates({ currencyTypes, baseCurrency })
-      setRates(ratesData)
+      const ratesData = await getCurrencyRates({ currencyTypes, baseCurrency })
+      setCurrencyRates(ratesData)
       timeoutId = setTimeout(getRatesData, 100000)
     }
 
@@ -22,5 +22,5 @@ export const useRatesInterval = (baseCurrency: CurrencyType) => {
     }
   }, [currencyTypes, baseCurrency])
 
-  return { rates }
+  return { currencyRates }
 }
