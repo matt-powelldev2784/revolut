@@ -2,9 +2,12 @@ import { CurrencyType, useAppContext } from 'context/AppContext'
 import { useEffect, useState } from 'react'
 import { ApiResponse, getCurrencyRates } from 'utils/getCurrencyRates'
 
-export const useRatesInterval = (baseCurrency: CurrencyType) => {
+export const usePollCurrencyRates = (baseCurrency: CurrencyType) => {
   const [currencyRates, setCurrencyRates] = useState<ApiResponse>()
   const { currencyTypes } = useAppContext()
+  // refresh data every 10 seconds
+  // TODO REDUCE TIMER
+  const POLLING_INTERVAL = 100000
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout
@@ -12,9 +15,10 @@ export const useRatesInterval = (baseCurrency: CurrencyType) => {
     const getRatesData = async () => {
       const ratesData = await getCurrencyRates({ currencyTypes, baseCurrency })
       setCurrencyRates(ratesData)
-      timeoutId = setTimeout(getRatesData, 100000)
+      timeoutId = setTimeout(getRatesData, POLLING_INTERVAL)
     }
 
+    // get data on first  load
     getRatesData()
 
     return () => {

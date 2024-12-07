@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ChangeEvent, useState } from 'react'
-import { useRatesInterval } from './hooks/useRatesInterval'
+import { usePollCurrencyRates } from './hooks/usePollCurrencyRates'
 import swapIcon from '../../assets/swap.svg'
 import errorIcon from '../../assets/error.svg'
 
@@ -43,7 +43,7 @@ export const ExchangeForm = () => {
   const [savedFromAmount, setSavedFromAmount] = useState('0.00')
   const [savedToAmount, setSavedToAmount] = useState('0.00')
   const { currencyTypes } = useAppContext()
-  const { currencyRates } = useRatesInterval(baseCurrency)
+  const { currencyRates } = usePollCurrencyRates(baseCurrency)
 
   console.log('currencyRates---', currencyRates)
 
