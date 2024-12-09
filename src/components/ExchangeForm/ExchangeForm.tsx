@@ -71,10 +71,10 @@ export const ExchangeForm = () => {
 
   const baseCurrencyRate = currencyRates.filter((currencyRate) => {
     return currencyRate.currency === getValues('baseWallet')
-  })
+  })[0]
   const toCurrencyRate = currencyRates.filter((currencyRate) => {
     return currencyRate.currency === getValues('toWallet')
-  })
+  })[0]
 
   const onChangeBaseAmount = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value)
@@ -85,7 +85,7 @@ export const ExchangeForm = () => {
     setSavedBaseAmount(valueWithTwoDecimalPlaces)
     setValue('baseAmount', valueWithTwoDecimalPlaces)
 
-    const calculatedToAmount = (value * toCurrencyRate[0].rate).toFixed(2)
+    const calculatedToAmount = (value * toCurrencyRate.rate).toFixed(2)
     setValue('toAmount', calculatedToAmount)
   }
 
@@ -98,7 +98,7 @@ export const ExchangeForm = () => {
     setSavedToAmount(valueWithTwoDecimalPlaces)
     setValue('toAmount', valueWithTwoDecimalPlaces)
 
-    const calculatedBaseAmount = (value / toCurrencyRate[0].rate).toFixed(2)
+    const calculatedBaseAmount = (value / toCurrencyRate.rate).toFixed(2)
     setValue('baseAmount', calculatedBaseAmount)
   }
 
@@ -113,7 +113,7 @@ export const ExchangeForm = () => {
 
     setValue('toWallet', currentBaseCurrency)
     const calculatedToAmount = (
-      Number(currentToAmount) / toCurrencyRate[0].rate
+      Number(currentToAmount) / toCurrencyRate.rate
     ).toFixed(2)
     setValue('toAmount', calculatedToAmount)
 
@@ -149,8 +149,8 @@ export const ExchangeForm = () => {
         <div className="flex flex-row items-center">
           <img src={trendIcon} alt="error icon" className="m-2" />
           <p className="text-sm text-blue-600">
-            {baseCurrencyRate[0].rate} {baseCurrencyRate[0].currency} ={' '}
-            {toCurrencyRate[0].rate} {toCurrencyRate[0].currency}
+            {baseCurrencyRate.rate} {baseCurrencyRate.currency} ={' '}
+            {toCurrencyRate.rate} {toCurrencyRate.currency}
           </p>
         </div>
       </div>
@@ -189,7 +189,7 @@ export const ExchangeForm = () => {
             )
           })}
         </select>
-        -
+        +
         <input
           className="h-10 w-[200px] border-2 border-black p-2"
           {...register('toAmount')}
