@@ -5,8 +5,6 @@ import { ApiResponse, getCurrencyRates } from 'utils/getCurrencyRates'
 export const usePollCurrencyRates = (baseCurrency: CurrencyType) => {
   const [currencyRates, setCurrencyRates] = useState<ApiResponse>()
   const { currencyTypes } = useAppContext()
-  // refresh data every 10 seconds
-  // TODO REDUCE TIMER
   const POLLING_INTERVAL = 10000
 
   useEffect(() => {
