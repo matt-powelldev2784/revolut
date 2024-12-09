@@ -6,6 +6,7 @@ import { ChangeEvent, useState } from 'react'
 import { usePollCurrencyRates } from './hooks/usePollCurrencyRates'
 import swapIcon from '../../assets/swap.svg'
 import errorIcon from '../../assets/error.svg'
+import trendIcon from '../../assets/trend.svg'
 
 interface FormSchema {
   fromWallet: CurrencyType
@@ -83,12 +84,28 @@ export const ExchangeForm = () => {
   // return error if the api has an error state
   if ('error' in currencyRates) return <ErrorJsx />
 
+  const baseCurrencyRate = currencyRates.filter((currencyRate) => {
+    return currencyRate.currency === getValues('fromWallet')
+  })
+  const toCurrencyRate = currencyRates.filter((currencyRate) => {
+    return currencyRate.currency === getValues('toWallet')
+  })
+
   return (
     <form
-      className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4  pt-4"
+      className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4 pt-4"
       onSubmit={handleSubmit(handleRegistration)}
     >
-      <p className="text-xl font-bold">Move Money</p>
+      <div className="flex flex-col items-center">
+        <p className="text-xl font-bold">Move Money</p>
+        <div className="flex flex-row items-center">
+          <img src={trendIcon} alt="error icon" className="m-2" />
+          <p className="text-sm text-blue-600">
+            {baseCurrencyRate[0].rate} {baseCurrencyRate[0].currency} ={' '}
+            {toCurrencyRate[0].rate} {toCurrencyRate[0].currency}
+          </p>
+        </div>
+      </div>
 
       <div className="flex flex-row items-center justify-center gap-4">
         <label className="hidden">From Wallet</label>
