@@ -59,36 +59,6 @@ export const ExchangeForm = () => {
   })
   const handleRegistration = (data: FormSchema) => console.log(data)
 
-  const handleCurrencySwap = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    const currentFromCurrency = getValues('fromWallet')
-    const currentToCurrency = getValues('toWallet')
-
-    setValue('fromWallet', currentToCurrency)
-    setValue('toWallet', currentFromCurrency)
-    setBaseCurrency(currentToCurrency)
-  }
-
-  const onChangeFromAmount = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value)
-    // if value cannot be converted to number return previously saved number
-    if (isNaN(value)) return setValue('fromAmount', savedFromAmount)
-
-    const valueWithTwoDecimalPlaces = value.toFixed(2)
-    setSavedFromAmount(valueWithTwoDecimalPlaces)
-    setValue('fromAmount', valueWithTwoDecimalPlaces)
-  }
-
-  const onChangeToAmount = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value)
-    // if value cannot be converted to number return previously saved number
-    if (isNaN(value)) return setValue('toAmount', savedToAmount)
-
-    const valueWithTwoDecimalPlaces = value.toFixed(2)
-    setSavedToAmount(valueWithTwoDecimalPlaces)
-    setValue('toAmount', valueWithTwoDecimalPlaces)
-  }
-
   // return null if api is yet to run
   if (currencyRates === undefined) return null
   // return error if the api has an error state
@@ -100,6 +70,50 @@ export const ExchangeForm = () => {
   const toCurrencyRate = currencyRates.filter((currencyRate) => {
     return currencyRate.currency === getValues('toWallet')
   })
+
+  const onChangeFromAmount = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value)
+    // if value cannot be converted to number return previously saved number
+    if (isNaN(value)) return setValue('fromAmount', savedFromAmount)
+
+    const valueWithTwoDecimalPlaces = value.toFixed(2)
+    setSavedFromAmount(valueWithTwoDecimalPlaces)
+    setValue('fromAmount', valueWithTwoDecimalPlaces)
+
+    const calculatedToAmount = (value * toCurrencyRate[0].rate).toFixed(2)
+    setValue('toAmount', calculatedToAmount)
+  }
+
+  const onChangeToAmount = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = parseFloat(e.target.value)
+    // if value cannot be converted to number return previously saved number
+    if (isNaN(value)) return setValue('toAmount', savedToAmount)
+
+    const valueWithTwoDecimalPlaces = value.toFixed(2)
+    setSavedToAmount(valueWithTwoDecimalPlaces)
+    setValue('toAmount', valueWithTwoDecimalPlaces)
+
+    const calculatedFromAmount = (value / toCurrencyRate[0].rate).toFixed(2)
+    setValue('fromAmount', calculatedFromAmount)
+  }
+
+  const handleCurrencySwap = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const currentFromCurrency = getValues('fromWallet')
+    const currentToCurrency = getValues('toWallet')
+    const currentToAmount = getValues('toAmount')
+
+    setValue('fromWallet', currentToCurrency)
+    setValue('fromAmount', currentToAmount)
+    setValue('toWallet', currentFromCurrency)
+
+    const calculatedToAmount = (
+      Number(currentToAmount) / toCurrencyRate[0].rate
+    ).toFixed(2)
+    setValue('toAmount', calculatedToAmount)
+
+    setBaseCurrency(currentToCurrency)
+  }
 
   return (
     <form
