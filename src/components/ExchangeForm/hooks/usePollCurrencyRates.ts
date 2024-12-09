@@ -10,16 +10,16 @@ export const usePollCurrencyRates = (baseCurrency: CurrencyType) => {
   const POLLING_INTERVAL = 10000
 
   useEffect(() => {
-    const getRatesData = async () => {
+    const handleRatesData = async () => {
       const ratesData = await getCurrencyRates({ currencyTypes, baseCurrency })
       setCurrencyRates(ratesData)
     }
 
     // get data on first load
-    getRatesData()
+    handleRatesData()
 
     // set interval for subsequent data requests
-    const timeoutId = setInterval(getRatesData, POLLING_INTERVAL)
+    const timeoutId = setInterval(handleRatesData, POLLING_INTERVAL)
 
     return () => {
       clearInterval(timeoutId)
