@@ -7,7 +7,7 @@ export const usePollCurrencyRates = (baseCurrency: CurrencyType) => {
   const { currencyTypes } = useAppContext()
   // refresh data every 10 seconds
   // TODO REDUCE TIMER
-  const POLLING_INTERVAL = 100000
+  const POLLING_INTERVAL = 10000
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout

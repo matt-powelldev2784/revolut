@@ -216,7 +216,7 @@ export const ExchangeForm = () => {
         />
       </div>
 
-      <button className="h-10 w-[300px] rounded-xl bg-blue-600 text-xl text-white">
+      <button className="my-2 h-10 w-[300px] rounded-xl bg-blue-600 text-xl text-white">
         Exchange
       </button>
     </form>
