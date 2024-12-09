@@ -1,4 +1,4 @@
-import axios, { isAxiosError } from 'axios'
+import axios from 'axios'
 import { CurrencyType } from 'context/AppContext'
 
 interface GetCurrencyRates {
@@ -36,7 +36,6 @@ export const getCurrencyRates = async ({
     return ratesArray
     //
   } catch (error) {
-    if (!isAxiosError(error)) return
     return { error: true }
   }
 }
