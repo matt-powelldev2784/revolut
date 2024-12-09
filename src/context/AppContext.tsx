@@ -9,12 +9,10 @@ import {
 
 export type CurrencyType = 'GBP' | 'USD' | 'EUR'
 interface AppContext {
-  eurBalance: number
-  setEurBalance: Dispatch<SetStateAction<number>>
-  gbpBalance: number
-  setGbpBalance: Dispatch<SetStateAction<number>>
-  usdBalance: number
-  setUsdBalance: Dispatch<SetStateAction<number>>
+  accountBalances: { GBP: number; USD: number; EUR: number }
+  setAccountBalances: Dispatch<
+    SetStateAction<{ GBP: number; USD: number; EUR: number }>
+  >
   currencyTypes: CurrencyType[]
 }
 
@@ -29,20 +27,18 @@ export const useAppContext = () => {
 }
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
-  const [eurBalance, setEurBalance] = useState(50)
-  const [gbpBalance, setGbpBalance] = useState(50)
-  const [usdBalance, setUsdBalance] = useState(50)
   const currencyTypes: CurrencyType[] = ['EUR', 'GBP', 'USD']
+  const [accountBalances, setAccountBalances] = useState({
+    EUR: 50,
+    GBP: 50,
+    USD: 50
+  })
 
   return (
     <AppContext.Provider
       value={{
-        eurBalance,
-        setEurBalance,
-        gbpBalance,
-        setGbpBalance,
-        usdBalance,
-        setUsdBalance,
+        accountBalances,
+        setAccountBalances,
         currencyTypes
       }}
     >

@@ -43,7 +43,7 @@ export const ExchangeForm = () => {
   const [baseCurrency, setBaseCurrency] = useState<CurrencyType>('GBP')
   const [savedFromAmount, setSavedFromAmount] = useState('0.00')
   const [savedToAmount, setSavedToAmount] = useState('0.00')
-  const { currencyTypes } = useAppContext()
+  const { currencyTypes, accountBalances, setAccountBalances } = useAppContext()
   const { currencyRates } = usePollCurrencyRates(baseCurrency)
 
   console.log('currencyRates---', currencyRates)
@@ -57,7 +57,6 @@ export const ExchangeForm = () => {
     },
     resolver: yupResolver(formsSchema)
   })
-  const handleRegistration = (data: FormSchema) => console.log(data)
 
   // return null if api is yet to run
   if (currencyRates === undefined) return null
@@ -105,8 +104,8 @@ export const ExchangeForm = () => {
 
     setValue('fromWallet', currentToCurrency)
     setValue('fromAmount', currentToAmount)
-    setValue('toWallet', currentFromCurrency)
 
+    setValue('toWallet', currentFromCurrency)
     const calculatedToAmount = (
       Number(currentToAmount) / toCurrencyRate[0].rate
     ).toFixed(2)
@@ -115,10 +114,28 @@ export const ExchangeForm = () => {
     setBaseCurrency(currentToCurrency)
   }
 
+  const handleCurrencyExchange = (data: FormSchema) => {
+    console.log('data', data)
+    const fromAmount = data.fromAmount
+    const fromCurrency = data.fromWallet
+    const fromCurrencyNewAmount =
+      accountBalances[fromCurrency] - Number(fromAmount)
+
+    const toAmount = data.toAmount
+    const toCurrency = data.toWallet
+    const toCurrencyNewAmount = accountBalances[toCurrency] + Number(toAmount)
+
+    setAccountBalances({
+      ...accountBalances,
+      [fromCurrency]: fromCurrencyNewAmount,
+      [toCurrency]: toCurrencyNewAmount
+    })
+  }
+
   return (
     <form
       className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4 pt-4"
-      onSubmit={handleSubmit(handleRegistration)}
+      onSubmit={handleSubmit(handleCurrencyExchange)}
     >
       <div className="flex flex-col items-center">
         <p className="text-xl font-bold">Move Money</p>
