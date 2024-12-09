@@ -9,18 +9,18 @@ import errorIcon from '../../assets/error.svg'
 import trendIcon from '../../assets/trend.svg'
 
 interface FormSchema {
-  fromWallet: CurrencyType
-  fromAmount: string
+  baseWallet: CurrencyType
+  baseAmount: string
   toWallet: CurrencyType
   toAmount: string
 }
 
 const formsSchema = yup.object().shape({
-  fromWallet: yup
+  baseWallet: yup
     .string()
     .matches(/(GBP|USD|EUR)/)
     .required() as yup.Schema<CurrencyType>,
-  fromAmount: yup.string().required(),
+  baseAmount: yup.string().required(),
   toWallet: yup
     .string()
     .matches(/(GBP|USD|EUR)/)
@@ -33,7 +33,7 @@ const ErrorJsx = () => {
     <div className="m-8 flex flex-col items-center rounded-xl border-2 border-red-500 bg-red-100">
       <img src={errorIcon} alt="error icon" className="m-2" />
       <p className="px-4 pb-2">
-        An error has occurred when fetch the exchange rates
+        An error has occurred when fetching the exchange rates
       </p>
     </div>
   )
@@ -41,7 +41,7 @@ const ErrorJsx = () => {
 
 export const ExchangeForm = () => {
   const [baseCurrency, setBaseCurrency] = useState<CurrencyType>('GBP')
-  const [savedFromAmount, setSavedFromAmount] = useState('0.00')
+  const [savedBaseAmount, setSavedBaseAmount] = useState('0.00')
   const [savedToAmount, setSavedToAmount] = useState('0.00')
   const { currencyTypes, accountBalances, setAccountBalances } = useAppContext()
   const { currencyRates } = usePollCurrencyRates(baseCurrency)
@@ -56,8 +56,8 @@ export const ExchangeForm = () => {
     reset: resetForm
   } = useForm<FormSchema>({
     defaultValues: {
-      fromWallet: baseCurrency,
-      fromAmount: savedFromAmount,
+      baseWallet: baseCurrency,
+      baseAmount: savedBaseAmount,
       toWallet: 'EUR',
       toAmount: savedToAmount
     },
@@ -70,20 +70,20 @@ export const ExchangeForm = () => {
   if ('error' in currencyRates) return <ErrorJsx />
 
   const baseCurrencyRate = currencyRates.filter((currencyRate) => {
-    return currencyRate.currency === getValues('fromWallet')
+    return currencyRate.currency === getValues('baseWallet')
   })
   const toCurrencyRate = currencyRates.filter((currencyRate) => {
     return currencyRate.currency === getValues('toWallet')
   })
 
-  const onChangeFromAmount = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeBaseAmount = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value)
     // if value cannot be converted to number return previously saved number
-    if (isNaN(value)) return setValue('fromAmount', savedFromAmount)
+    if (isNaN(value)) return setValue('baseAmount', savedBaseAmount)
 
     const valueWithTwoDecimalPlaces = value.toFixed(2)
-    setSavedFromAmount(valueWithTwoDecimalPlaces)
-    setValue('fromAmount', valueWithTwoDecimalPlaces)
+    setSavedBaseAmount(valueWithTwoDecimalPlaces)
+    setValue('baseAmount', valueWithTwoDecimalPlaces)
 
     const calculatedToAmount = (value * toCurrencyRate[0].rate).toFixed(2)
     setValue('toAmount', calculatedToAmount)
@@ -98,20 +98,20 @@ export const ExchangeForm = () => {
     setSavedToAmount(valueWithTwoDecimalPlaces)
     setValue('toAmount', valueWithTwoDecimalPlaces)
 
-    const calculatedFromAmount = (value / toCurrencyRate[0].rate).toFixed(2)
-    setValue('fromAmount', calculatedFromAmount)
+    const calculatedBaseAmount = (value / toCurrencyRate[0].rate).toFixed(2)
+    setValue('baseAmount', calculatedBaseAmount)
   }
 
   const handleCurrencySwap = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    const currentFromCurrency = getValues('fromWallet')
+    const currentBaseCurrency = getValues('baseWallet')
     const currentToCurrency = getValues('toWallet')
     const currentToAmount = getValues('toAmount')
 
-    setValue('fromWallet', currentToCurrency)
-    setValue('fromAmount', currentToAmount)
+    setValue('baseWallet', currentToCurrency)
+    setValue('baseAmount', currentToAmount)
 
-    setValue('toWallet', currentFromCurrency)
+    setValue('toWallet', currentBaseCurrency)
     const calculatedToAmount = (
       Number(currentToAmount) / toCurrencyRate[0].rate
     ).toFixed(2)
@@ -121,19 +121,19 @@ export const ExchangeForm = () => {
   }
 
   const handleCurrencyExchange = (data: FormSchema) => {
-    const fromAmount = data.fromAmount
-    const fromCurrency = data.fromWallet
-    const fromCurrencyNewAmount =
-      accountBalances[fromCurrency] - Number(fromAmount)
+    const baseAmount = data.baseAmount
+    const baseCurrency = data.baseWallet
+    const baseCurrencyNewBalance =
+      accountBalances[baseCurrency] - Number(baseAmount)
 
     const toAmount = data.toAmount
     const toCurrency = data.toWallet
-    const toCurrencyNewAmount = accountBalances[toCurrency] + Number(toAmount)
+    const toCurrencyNewBalance = accountBalances[toCurrency] + Number(toAmount)
 
     setAccountBalances({
       ...accountBalances,
-      [fromCurrency]: fromCurrencyNewAmount,
-      [toCurrency]: toCurrencyNewAmount
+      [baseCurrency]: baseCurrencyNewBalance,
+      [toCurrency]: toCurrencyNewBalance
     })
 
     resetForm()
@@ -156,8 +156,8 @@ export const ExchangeForm = () => {
       </div>
 
       <div className="flex flex-row items-center justify-center gap-4">
-        <label className="hidden">From Wallet</label>
-        <select className="h-10 w-[80px] p-2" {...register('fromWallet')}>
+        <label className="hidden">Base Wallet</label>
+        <select className="h-10 w-[80px] p-2" {...register('baseWallet')}>
           {currencyTypes.map((currencyType) => {
             return (
               <option key={currencyType} value={currencyType} className="w-40">
@@ -169,8 +169,8 @@ export const ExchangeForm = () => {
         -
         <input
           className="h-10 w-[200px] border-2 border-black p-2"
-          {...register('fromAmount')}
-          onChange={onChangeFromAmount}
+          {...register('baseAmount')}
+          onChange={onChangeBaseAmount}
         />
       </div>
 
@@ -179,7 +179,7 @@ export const ExchangeForm = () => {
       </button>
 
       <div className="flex flex-row items-center justify-center gap-4">
-        <label className="hidden">From Wallet</label>
+        <label className="hidden">To Wallet</label>
         <select className="h-10 w-[80px] p-2" {...register('toWallet')}>
           {currencyTypes.map((currencyType) => {
             return (
