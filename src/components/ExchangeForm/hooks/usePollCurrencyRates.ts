@@ -15,14 +15,14 @@ export const usePollCurrencyRates = (baseCurrency: CurrencyType) => {
     const getRatesData = async () => {
       const ratesData = await getCurrencyRates({ currencyTypes, baseCurrency })
       setCurrencyRates(ratesData)
-      timeoutId = setTimeout(getRatesData, POLLING_INTERVAL)
+      timeoutId = setInterval(getRatesData, POLLING_INTERVAL)
     }
 
     // get data on first  load
     getRatesData()
 
     return () => {
-      clearTimeout(timeoutId)
+      clearInterval(timeoutId)
     }
   }, [currencyTypes, baseCurrency])
 

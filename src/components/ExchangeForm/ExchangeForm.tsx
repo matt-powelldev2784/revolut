@@ -41,6 +41,7 @@ const ErrorJsx = () => {
 
 export const ExchangeForm = () => {
   const [baseCurrency, setBaseCurrency] = useState<CurrencyType>('GBP')
+  const [toCurrency, setToCurrency] = useState<CurrencyType>('EUR')
   const [savedBaseAmount, setSavedBaseAmount] = useState('0.00')
   const [savedToAmount, setSavedToAmount] = useState('0.00')
   const { currencyTypes, accountBalances, setAccountBalances } = useAppContext()
@@ -58,7 +59,7 @@ export const ExchangeForm = () => {
     defaultValues: {
       baseWallet: baseCurrency,
       baseAmount: savedBaseAmount,
-      toWallet: 'EUR',
+      toWallet: toCurrency,
       toAmount: savedToAmount
     },
     resolver: yupResolver(formsSchema)
@@ -76,7 +77,7 @@ export const ExchangeForm = () => {
     return currencyRate.currency === getValues('toWallet')
   })[0]
 
-  const onChangeBaseAmount = (e: ChangeEvent<HTMLInputElement>) => {
+  const onBaseAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value)
     // if value cannot be converted to number return previously saved number
     if (isNaN(value)) return setValue('baseAmount', savedBaseAmount)
@@ -89,7 +90,7 @@ export const ExchangeForm = () => {
     setValue('toAmount', calculatedToAmount)
   }
 
-  const onChangeToAmount = (e: ChangeEvent<HTMLInputElement>) => {
+  const onToAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value)
     // if value cannot be converted to number return previously saved number
     if (isNaN(value)) return setValue('toAmount', savedToAmount)
@@ -102,7 +103,17 @@ export const ExchangeForm = () => {
     setValue('baseAmount', calculatedBaseAmount)
   }
 
-  const handleCurrencySwap = (e: MouseEvent<HTMLButtonElement>) => {
+  const onBaseCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setBaseCurrency(e.target.value as CurrencyType)
+    setValue('baseWallet', e.target.value as CurrencyType)
+  }
+
+  const onToCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setToCurrency(e.target.value as CurrencyType)
+    setValue('toWallet', e.target.value as CurrencyType)
+  }
+
+  const onCurrencySwap = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     const currentBaseCurrency = getValues('baseWallet')
     const currentToCurrency = getValues('toWallet')
@@ -120,7 +131,7 @@ export const ExchangeForm = () => {
     setBaseCurrency(currentToCurrency)
   }
 
-  const handleCurrencyExchange = (data: FormSchema) => {
+  const onCurrencyExchange = (data: FormSchema) => {
     const baseAmount = data.baseAmount
     const baseCurrency = data.baseWallet
     const baseCurrencyNewBalance =
@@ -142,7 +153,7 @@ export const ExchangeForm = () => {
   return (
     <form
       className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4 pt-4"
-      onSubmit={handleSubmit(handleCurrencyExchange)}
+      onSubmit={handleSubmit(onCurrencyExchange)}
     >
       <div className="flex flex-col items-center">
         <p className="text-xl font-bold">Move Money</p>
@@ -157,7 +168,11 @@ export const ExchangeForm = () => {
 
       <div className="flex flex-row items-center justify-center gap-4">
         <label className="hidden">Base Wallet</label>
-        <select className="h-10 w-[80px] p-2" {...register('baseWallet')}>
+        <select
+          className="h-10 w-[80px] p-2"
+          {...register('baseWallet')}
+          onChange={onBaseCurrencyChange}
+        >
           {currencyTypes.map((currencyType) => {
             return (
               <option key={currencyType} value={currencyType} className="w-40">
@@ -170,17 +185,21 @@ export const ExchangeForm = () => {
         <input
           className="h-10 w-[200px] border-2 border-black p-2"
           {...register('baseAmount')}
-          onChange={onChangeBaseAmount}
+          onChange={onBaseAmountChange}
         />
       </div>
 
-      <button onClick={handleCurrencySwap}>
+      <button onClick={onCurrencySwap}>
         <img src={swapIcon} alt="swap icon" />
       </button>
 
       <div className="flex flex-row items-center justify-center gap-4">
         <label className="hidden">To Wallet</label>
-        <select className="h-10 w-[80px] p-2" {...register('toWallet')}>
+        <select
+          className="h-10 w-[80px] p-2"
+          {...register('toWallet')}
+          onChange={onToCurrencyChange}
+        >
           {currencyTypes.map((currencyType) => {
             return (
               <option key={currencyType} value={currencyType} className="w-40">
@@ -193,7 +212,7 @@ export const ExchangeForm = () => {
         <input
           className="h-10 w-[200px] border-2 border-black p-2"
           {...register('toAmount')}
-          onChange={onChangeToAmount}
+          onChange={onToAmountChange}
         />
       </div>
 
