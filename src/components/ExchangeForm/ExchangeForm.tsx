@@ -2,7 +2,7 @@ import { CurrencyType, useAppContext } from 'context/AppContext'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, MouseEvent, useState } from 'react'
 import { usePollCurrencyRates } from './hooks/usePollCurrencyRates'
 import swapIcon from '../../assets/swap.svg'
 import errorIcon from '../../assets/error.svg'
@@ -58,6 +58,16 @@ export const ExchangeForm = () => {
     resolver: yupResolver(formsSchema)
   })
   const handleRegistration = (data: FormSchema) => console.log(data)
+
+  const handleCurrencySwap = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    const currentFromCurrency = getValues('fromWallet')
+    const currentToCurrency = getValues('toWallet')
+
+    setValue('fromWallet', currentToCurrency)
+    setValue('toWallet', currentFromCurrency)
+    setBaseCurrency(currentToCurrency)
+  }
 
   const onChangeFromAmount = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value)
@@ -126,17 +136,7 @@ export const ExchangeForm = () => {
         />
       </div>
 
-      <button
-        onClick={(e) => {
-          e.preventDefault()
-          const currentFromCurrency = getValues('fromWallet')
-          const currentToCurrency = getValues('toWallet')
-
-          setValue('fromWallet', currentToCurrency)
-          setValue('toWallet', currentFromCurrency)
-          setBaseCurrency(currentToCurrency)
-        }}
-      >
+      <button onClick={handleCurrencySwap}>
         <img src={swapIcon} alt="swap icon" />
       </button>
 
