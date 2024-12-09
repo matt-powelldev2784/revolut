@@ -48,7 +48,13 @@ export const ExchangeForm = () => {
 
   console.log('currencyRates---', currencyRates)
 
-  const { register, setValue, handleSubmit, getValues } = useForm<FormSchema>({
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    getValues,
+    reset: resetForm
+  } = useForm<FormSchema>({
     defaultValues: {
       fromWallet: baseCurrency,
       fromAmount: savedFromAmount,
@@ -115,7 +121,6 @@ export const ExchangeForm = () => {
   }
 
   const handleCurrencyExchange = (data: FormSchema) => {
-    console.log('data', data)
     const fromAmount = data.fromAmount
     const fromCurrency = data.fromWallet
     const fromCurrencyNewAmount =
@@ -130,6 +135,8 @@ export const ExchangeForm = () => {
       [fromCurrency]: fromCurrencyNewAmount,
       [toCurrency]: toCurrencyNewAmount
     })
+
+    resetForm()
   }
 
   return (
