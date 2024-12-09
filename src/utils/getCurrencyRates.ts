@@ -1,7 +1,7 @@
 import axios, { isAxiosError } from 'axios'
 import { CurrencyType } from 'context/AppContext'
 
-interface getRates {
+interface GetCurrencyRates {
   currencyTypes: CurrencyType[]
   baseCurrency: CurrencyType
 }
@@ -15,7 +15,7 @@ export type ApiResponse = CurrencyRate[] | { error: boolean } | undefined
 export const getCurrencyRates = async ({
   currencyTypes,
   baseCurrency
-}: getRates) => {
+}: GetCurrencyRates) => {
   const urlPrefix = 'https://api.freecurrencyapi.com/v1/latest?apikey='
   const apiKey = import.meta.env.VITE_FREE_CURRENCY_API_KEY
   const currencyTypesString = currencyTypes.join(',')
