@@ -78,8 +78,10 @@ export const ExchangeForm = () => {
     setValue('toAmount', valueWithTwoDecimalPlaces)
   }
 
-  // type guard to check currency rates api returns an error
-  if (!Array.isArray(currencyRates)) return <ErrorJsx />
+  // return null if api is yet to run
+  if (currencyRates === undefined) return null
+  // return error if the api has an error state
+  if ('error' in currencyRates) return <ErrorJsx />
 
   return (
     <form
