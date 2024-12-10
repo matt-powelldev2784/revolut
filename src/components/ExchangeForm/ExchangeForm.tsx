@@ -128,6 +128,7 @@ export const ExchangeForm = () => {
     const toCurrency = data.toWallet
     const toCurrencyNewBalance = accountBalances[toCurrency] + Number(toAmount)
 
+    // return error if insufficient balance to make transaction
     if (baseCurrencyNewBalance < 0) return setIsError(true)
 
     setAccountBalances({
