@@ -52,8 +52,11 @@ describe('ExchangeForm', () => {
   })
 
   test('should not allow letter characters to be typed into inputs', () => {
-    // fireEvent is suitable to test the input changes as expected
+    // fireEvent is suitable to test the inputs change as expected
     // I'm unable to get user event to function correctly for this test
+    // when the input is changed to a number the input updates
+    // when the user changes the value to a letter the input reverts back
+    // to the last value as expected
 
     renderExchangeForm()
 
