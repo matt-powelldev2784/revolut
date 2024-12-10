@@ -50,7 +50,7 @@ export const ExchangeForm = () => {
     }
   })
 
-  // return null if api is yet to run
+  // return null if api is yet to return data
   if (currencyRates === undefined) return null
   // return error if the api has an error state
   if ('error' in currencyRates) return <ErrorJsx />
