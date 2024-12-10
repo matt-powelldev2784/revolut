@@ -35,13 +35,7 @@ export const ExchangeForm = () => {
 
   console.log('currencyRates---', currencyRates)
 
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    getValues,
-    reset: resetForm
-  } = useForm<FormSchema>({
+  const { register, setValue, handleSubmit, getValues } = useForm<FormSchema>({
     defaultValues: {
       baseWallet: baseCurrency,
       baseAmount: savedBaseAmount,
@@ -137,7 +131,8 @@ export const ExchangeForm = () => {
       [toCurrency]: toCurrencyNewBalance
     })
 
-    resetForm()
+    setValue('baseAmount', '0.00')
+    setValue('toAmount', '0.00')
   }
 
   return (
