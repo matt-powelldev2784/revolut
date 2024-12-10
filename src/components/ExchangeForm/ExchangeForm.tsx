@@ -1,7 +1,5 @@
 import { CurrencyType, useAppContext } from 'context/AppContext'
 import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { ChangeEvent, MouseEvent, useState } from 'react'
 import { usePollCurrencyRates } from './hooks/usePollCurrencyRates'
 import swapIcon from '../../assets/swap.svg'
@@ -14,19 +12,6 @@ interface FormSchema {
   toWallet: CurrencyType
   toAmount: string
 }
-
-const formsSchema = yup.object().shape({
-  baseWallet: yup
-    .string()
-    .matches(/(GBP|USD|EUR)/)
-    .required() as yup.Schema<CurrencyType>,
-  baseAmount: yup.string().required(),
-  toWallet: yup
-    .string()
-    .matches(/(GBP|USD|EUR)/)
-    .required() as yup.Schema<CurrencyType>,
-  toAmount: yup.string().required()
-})
 
 const ErrorJsx = () => {
   return (
@@ -62,8 +47,7 @@ export const ExchangeForm = () => {
       baseAmount: savedBaseAmount,
       toWallet: toCurrency,
       toAmount: savedToAmount
-    },
-    resolver: yupResolver(formsSchema)
+    }
   })
 
   // return null if api is yet to run
