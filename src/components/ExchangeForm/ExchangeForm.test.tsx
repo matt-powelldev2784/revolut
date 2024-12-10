@@ -12,24 +12,32 @@ const currencyRates: ApiResponse = [
   { currency: 'USD', rate: 1.2749246003 }
 ]
 
-test('should not allow letter characters to be typed into inputs', () => {
-  mockUsePollCurrencyRates.mockReturnValue({ currencyRates })
+describe('ExchangeForm', () => {
+  beforeEach(() => {
+    mockUsePollCurrencyRates.mockReturnValue({ currencyRates })
+  })
 
-  render(
-    <AppContextProvider>
-      <ExchangeForm />
-    </AppContextProvider>
-  )
+  const renderExchangeForm = () =>
+    render(
+      <AppContextProvider>
+        <ExchangeForm />
+      </AppContextProvider>
+    )
 
-  // check that base amount input does not allow letter input
-  const baseAmountInput: HTMLInputElement = screen.getByLabelText('fromAmount')
-  fireEvent.change(baseAmountInput, { target: { value: '1' } })
-  fireEvent.change(baseAmountInput, { target: { value: 'A' } })
-  expect(baseAmountInput.value).toBe('1.00')
+  test('should not allow letter characters to be typed into inputs', () => {
+    renderExchangeForm()
 
-  // check that to amount input does not allow letter input
-  const toAmountInput: HTMLInputElement = screen.getByLabelText('toAmount')
-  fireEvent.change(toAmountInput, { target: { value: '0.01' } })
-  fireEvent.change(toAmountInput, { target: { value: 'A' } })
-  expect(toAmountInput.value).toBe('0.01')
+    // check that base amount input does not allow letter input
+    const baseAmountInput: HTMLInputElement =
+      screen.getByLabelText('fromAmount')
+    fireEvent.change(baseAmountInput, { target: { value: '1' } })
+    fireEvent.change(baseAmountInput, { target: { value: 'A' } })
+    expect(baseAmountInput.value).toBe('1.00')
+
+    // check that to amount input does not allow letter input
+    const toAmountInput: HTMLInputElement = screen.getByLabelText('toAmount')
+    fireEvent.change(toAmountInput, { target: { value: '0.01' } })
+    fireEvent.change(toAmountInput, { target: { value: 'A' } })
+    expect(toAmountInput.value).toBe('0.01')
+  })
 })

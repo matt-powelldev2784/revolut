@@ -33,8 +33,6 @@ export const ExchangeForm = () => {
   const { currencyTypes, accountBalances, setAccountBalances } = useAppContext()
   const { currencyRates } = usePollCurrencyRates(baseCurrency)
 
-  console.log('currencyRates---', currencyRates)
-
   const { register, setValue, handleSubmit, getValues } = useForm<FormSchema>({
     defaultValues: {
       baseWallet: baseCurrency,
