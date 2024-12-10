@@ -155,7 +155,7 @@ export const ExchangeForm = () => {
           className="h-10 w-[80px] p-2"
           {...register('baseWallet')}
           onChange={onBaseCurrencyChange}
-          aria-label="Exchange From Wallet"
+          aria-label="Exchange from wallet"
         >
           {currencyTypes.map((currencyType) => {
             return (
@@ -184,7 +184,7 @@ export const ExchangeForm = () => {
           className="h-10 w-[80px] p-2"
           {...register('toWallet')}
           onChange={onToCurrencyChange}
-          aria-label="Exchange to Wallet"
+          aria-label="Exchange to wallet"
         >
           {currencyTypes.map((currencyType) => {
             return (

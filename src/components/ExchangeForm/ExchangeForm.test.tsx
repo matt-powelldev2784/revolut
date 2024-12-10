@@ -3,6 +3,7 @@ import { ExchangeForm } from './ExchangeForm'
 import { AppContextProvider } from 'context/AppContext'
 import { usePollCurrencyRates } from './hooks/usePollCurrencyRates'
 import { ApiResponse } from 'utils/getCurrencyRates'
+import userEvent from '@testing-library/user-event'
 
 vi.mock('./hooks/usePollCurrencyRates')
 const mockUsePollCurrencyRates = vi.mocked(usePollCurrencyRates)
@@ -39,5 +40,30 @@ describe('ExchangeForm', () => {
     fireEvent.change(toAmountInput, { target: { value: '0.01' } })
     fireEvent.change(toAmountInput, { target: { value: 'A' } })
     expect(toAmountInput.value).toBe('0.01')
+  })
+
+  test('should update the exchange rate text when currency types change', async () => {
+    renderExchangeForm()
+
+    const baseWalletSelect = screen.getByLabelText('Exchange from wallet')
+    const toWalletSelect = screen.getByLabelText('Exchange to wallet')
+    const exchangeRateText = screen.getByText(/1 GBP = 1.2075195735 EUR/)
+
+    // check initial values render correctly
+    expect(baseWalletSelect).toHaveValue('GBP')
+    expect(toWalletSelect).toHaveValue('EUR')
+    expect(exchangeRateText).toBeInTheDocument()
+
+    // change currency types
+    userEvent.selectOptions(baseWalletSelect, 'USD')
+    userEvent.selectOptions(toWalletSelect, 'GBP')
+
+    // wait for for state updates and check select elements and exchange rate has changed
+    const updatedExchangeRateText = await screen.findByText(
+      /1.2749246003 USD = 1 GBP/
+    )
+    expect(baseWalletSelect).toHaveValue('USD')
+    expect(toWalletSelect).toHaveValue('GBP')
+    expect(updatedExchangeRateText).toBeInTheDocument()
   })
 })
