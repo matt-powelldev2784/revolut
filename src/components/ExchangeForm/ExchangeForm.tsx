@@ -44,6 +44,7 @@ export const ExchangeForm = () => {
   const [toCurrency, setToCurrency] = useState<CurrencyType>('EUR')
   const [savedBaseAmount, setSavedBaseAmount] = useState('0.00')
   const [savedToAmount, setSavedToAmount] = useState('0.00')
+  const [isError, setIsError] = useState(false)
   const { currencyTypes, accountBalances, setAccountBalances } = useAppContext()
   const { currencyRates } = usePollCurrencyRates(baseCurrency)
 
@@ -132,6 +133,8 @@ export const ExchangeForm = () => {
   }
 
   const onCurrencyExchange = (data: FormSchema) => {
+    setIsError(false)
+
     const baseAmount = data.baseAmount
     const baseCurrency = data.baseWallet
     const baseCurrencyNewBalance =
@@ -140,6 +143,8 @@ export const ExchangeForm = () => {
     const toAmount = data.toAmount
     const toCurrency = data.toWallet
     const toCurrencyNewBalance = accountBalances[toCurrency] + Number(toAmount)
+
+    if (baseCurrencyNewBalance < 0) return setIsError(true)
 
     setAccountBalances({
       ...accountBalances,
@@ -216,9 +221,15 @@ export const ExchangeForm = () => {
         />
       </div>
 
-      <button className="my-2 h-10 w-[300px] rounded-xl bg-blue-600 text-xl text-white">
+      <button className="mt-2 h-10 w-[300px] rounded-xl bg-blue-600 text-xl text-white">
         Exchange
       </button>
+
+      {isError && (
+        <p className="text-center text-red-500">
+          You have insufficient balance in your account to make this transaction
+        </p>
+      )}
     </form>
   )
 }
