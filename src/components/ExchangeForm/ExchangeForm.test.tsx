@@ -43,6 +43,7 @@ describe('ExchangeForm', () => {
   })
 
   test('should update the exchange rate text when currency types change', async () => {
+    const user = userEvent.setup()
     renderExchangeForm()
 
     const baseWalletSelect = screen.getByLabelText('Exchange from wallet')
@@ -55,8 +56,8 @@ describe('ExchangeForm', () => {
     expect(exchangeRateText).toBeInTheDocument()
 
     // change currency types
-    userEvent.selectOptions(baseWalletSelect, 'USD')
-    userEvent.selectOptions(toWalletSelect, 'GBP')
+    user.selectOptions(baseWalletSelect, 'USD')
+    user.selectOptions(toWalletSelect, 'GBP')
 
     // wait for for state updates and check select elements and exchange rate has changed
     const updatedExchangeRateText = await screen.findByText(
