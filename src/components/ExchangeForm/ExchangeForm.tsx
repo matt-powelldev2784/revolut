@@ -167,7 +167,7 @@ export const ExchangeForm = () => {
         </select>
         -
         <input
-          className="h-10 w-[200px] border-2 border-black p-2"
+          className="h-10 w-[200px] rounded-lg border-2 border-black p-2"
           {...register('baseAmount')}
           onChange={onBaseAmountChange}
           aria-label="baseAmount"
@@ -196,7 +196,7 @@ export const ExchangeForm = () => {
         </select>
         +
         <input
-          className="h-10 w-[200px] border-2 border-black p-2"
+          className="h-10 w-[200px] rounded-lg border-2 border-black p-2"
           {...register('toAmount')}
           onChange={onToAmountChange}
           aria-label="toAmount"
