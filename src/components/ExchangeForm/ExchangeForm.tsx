@@ -152,10 +152,10 @@ export const ExchangeForm = () => {
       <div className="flex flex-row items-center justify-center gap-4">
         <label className="hidden">Base Wallet</label>
         <select
-          className="h-10 w-[80px] p-2"
           {...register('baseWallet')}
           onChange={onBaseCurrencyChange}
           aria-label="Exchange from wallet"
+          className="h-10 w-[80px] rounded-lg border bg-blue-100 p-2 focus:outline-none"
         >
           {currencyTypes.map((currencyType) => {
             return (
@@ -181,7 +181,7 @@ export const ExchangeForm = () => {
       <div className="flex flex-row items-center justify-center gap-4">
         <label className="hidden">To Wallet</label>
         <select
-          className="h-10 w-[80px] p-2"
+          className="h-10 w-[80px] rounded-lg border bg-blue-100 p-2 focus:outline-none"
           {...register('toWallet')}
           onChange={onToCurrencyChange}
           aria-label="Exchange to wallet"
