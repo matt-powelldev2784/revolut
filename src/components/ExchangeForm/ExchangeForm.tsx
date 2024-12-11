@@ -5,6 +5,8 @@ import { usePollCurrencyRates } from './hooks/usePollCurrencyRates'
 import swapIcon from '../../assets/swap.svg'
 import errorIcon from '../../assets/error.svg'
 import trendIcon from '../../assets/trend.svg'
+import plusIcon from '../../assets/plus.svg'
+import minusIcon from '../../assets/minus.svg'
 
 interface FormSchema {
   baseWallet: CurrencyType
@@ -152,7 +154,7 @@ export const ExchangeForm = () => {
       <div className="flex flex-row items-center justify-center gap-4">
         <label className="hidden">Base Wallet</label>
         <select
-          className="h-10 w-[80px] p-2"
+          className="h-10 w-[80px] rounded-lg p-2 focus:outline-none"
           {...register('baseWallet')}
           onChange={onBaseCurrencyChange}
           aria-label="Exchange from wallet"
@@ -165,9 +167,11 @@ export const ExchangeForm = () => {
             )
           })}
         </select>
-        -
+
+        <img src={minusIcon} alt="minus icon" />
+
         <input
-          className="h-10 w-[200px] border-2 border-black p-2"
+          className="h-10 w-[200px] rounded-lg border-2 border-black p-2"
           {...register('baseAmount')}
           onChange={onBaseAmountChange}
           aria-label="baseAmount"
@@ -181,7 +185,7 @@ export const ExchangeForm = () => {
       <div className="flex flex-row items-center justify-center gap-4">
         <label className="hidden">To Wallet</label>
         <select
-          className="h-10 w-[80px] p-2"
+          className="h-10 w-[80px] rounded-lg p-2 focus:outline-none"
           {...register('toWallet')}
           onChange={onToCurrencyChange}
           aria-label="Exchange to wallet"
@@ -194,9 +198,11 @@ export const ExchangeForm = () => {
             )
           })}
         </select>
-        +
+
+        <img src={plusIcon} alt="plus icon" />
+
         <input
-          className="h-10 w-[200px] border-2 border-black p-2"
+          className="h-10 w-[200px] rounded-lg border-2 border-black p-2"
           {...register('toAmount')}
           onChange={onToAmountChange}
           aria-label="toAmount"
