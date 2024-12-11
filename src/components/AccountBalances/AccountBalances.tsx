@@ -8,22 +8,22 @@ export const AccountBalances = () => {
       <h1 className="text-xl font-bold">Account Balances</h1>
 
       <div className="flex flex-row text-lg">
-        <p className="mx-4 min-w-[120px]">
+        <p className="mx-4 min-w-[120px]" aria-label="EUR Balance">
           EUR:{' '}
           <span className="text-blue-600">
             €{accountBalances.EUR.toFixed(2)}
           </span>
         </p>
-        <p className="mx-4 min-w-[120px]">
+        <p className="mx-4 min-w-[120px]" aria-label="GBP Balance">
           GBP:{' '}
           <span className="text-blue-600">
-            €{accountBalances.GBP.toFixed(2)}
+            £{accountBalances.GBP.toFixed(2)}
           </span>
         </p>
-        <p className="mx-4 min-w-[120px]">
+        <p className="mx-4 min-w-[120px]" aria-label="USD Balance">
           USD:{' '}
           <span className="text-blue-600">
-            €{accountBalances.USD.toFixed(2)}
+            ${accountBalances.USD.toFixed(2)}
           </span>
         </p>
       </div>
