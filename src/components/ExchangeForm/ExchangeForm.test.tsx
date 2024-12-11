@@ -62,7 +62,7 @@ describe('ExchangeForm', () => {
 
     // check that base amount input does not allow letter input
     const baseAmountInput: HTMLInputElement =
-      screen.getByLabelText('fromAmount')
+      screen.getByLabelText('baseAmount')
     fireEvent.change(baseAmountInput, { target: { value: '1' } })
     fireEvent.change(baseAmountInput, { target: { value: 'A' } })
     expect(baseAmountInput.value).toBe('1.00')

@@ -170,7 +170,7 @@ export const ExchangeForm = () => {
           className="h-10 w-[200px] border-2 border-black p-2"
           {...register('baseAmount')}
           onChange={onBaseAmountChange}
-          aria-label="fromAmount"
+          aria-label="baseAmount"
         />
       </div>
 
