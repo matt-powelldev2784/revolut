@@ -8,7 +8,7 @@
 
 ## Deployed App
 * Deployed app can be accessed using the following link:
-ADD_LINK_HERE
+https://revolut-currency-exchange.netlify.app/
 
 ## To run tests
 * End to end tests implemented with playwright. Run npx playwright test from the command line.
