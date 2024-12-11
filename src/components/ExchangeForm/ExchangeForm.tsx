@@ -157,7 +157,10 @@ export const ExchangeForm = () => {
       </div>
 
       <div className="flex flex-row items-center justify-center gap-4">
-        <label className="hidden">Base Wallet</label>
+        <label htmlFor="baseWallet" className="sr-only">
+          Base Wallet
+        </label>
+
         <select
           className="h-10 w-[80px] rounded-lg p-2 focus:outline-none"
           {...register('baseWallet')}
@@ -175,6 +178,10 @@ export const ExchangeForm = () => {
 
         <img src={minusIcon} alt="minus icon" />
 
+        <label htmlFor="baseAmount" className="sr-only">
+          Base Amount
+        </label>
+
         <input
           className="h-10 w-[200px] rounded-lg border-2 border-black p-2"
           {...register('baseAmount')}
@@ -188,7 +195,9 @@ export const ExchangeForm = () => {
       </button>
 
       <div className="flex flex-row items-center justify-center gap-4">
-        <label className="hidden">To Wallet</label>
+        <label htmlFor="toWallet" className="hidden">
+          To Wallet
+        </label>
         <select
           className="h-10 w-[80px] rounded-lg p-2 focus:outline-none"
           {...register('toWallet')}
@@ -206,6 +215,9 @@ export const ExchangeForm = () => {
 
         <img src={plusIcon} alt="plus icon" />
 
+        <label htmlFor="toAmount" className="sr-only">
+          To Amount
+        </label>
         <input
           className="h-10 w-[200px] rounded-lg border-2 border-black p-2"
           {...register('toAmount')}
