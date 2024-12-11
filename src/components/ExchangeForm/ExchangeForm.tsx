@@ -5,6 +5,8 @@ import { usePollCurrencyRates } from './hooks/usePollCurrencyRates'
 import swapIcon from '../../assets/swap.svg'
 import errorIcon from '../../assets/error.svg'
 import trendIcon from '../../assets/trend.svg'
+import plusIcon from '../../assets/plus.svg'
+import minusIcon from '../../assets/minus.svg'
 
 interface FormSchema {
   baseWallet: CurrencyType
@@ -165,7 +167,9 @@ export const ExchangeForm = () => {
             )
           })}
         </select>
-        -
+
+        <img src={minusIcon} alt="minus icon" />
+
         <input
           className="h-10 w-[200px] rounded-lg border-2 border-black p-2"
           {...register('baseAmount')}
@@ -194,7 +198,9 @@ export const ExchangeForm = () => {
             )
           })}
         </select>
-        +
+
+        <img src={plusIcon} alt="plus icon" />
+
         <input
           className="h-10 w-[200px] rounded-lg border-2 border-black p-2"
           {...register('toAmount')}
