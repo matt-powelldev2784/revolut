@@ -23,7 +23,7 @@ Build app with Vite, React, TypeScript, TailwindCSS using template form Vite Com
 * Use freecurrencyapi.com to get exchange rates which allows for 10 free requests per minute and 5000 requests per month
 * Poll exchange api every 10 seconds
 * Use custom validation for 2 x inputs
-* The input should on accept numbers with 2 decimal places
+* The input should only accept numbers with 2 decimal places
 * Allow exchange between pockets / wallets
 * Display exchange rates and pocket balances
 
