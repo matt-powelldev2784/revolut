@@ -62,11 +62,12 @@ export const ExchangeForm = () => {
     if (isNaN(value)) return setValue('baseAmount', savedBaseAmount)
 
     const valueWithTwoDecimalPlaces = value.toFixed(2)
-    setSavedBaseAmount(valueWithTwoDecimalPlaces)
     setValue('baseAmount', valueWithTwoDecimalPlaces)
+    setSavedBaseAmount(valueWithTwoDecimalPlaces)
 
     const calculatedToAmount = (value * toCurrencyRate.rate).toFixed(2)
     setValue('toAmount', calculatedToAmount)
+    setSavedToAmount(calculatedToAmount)
   }
 
   const onToAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -75,11 +76,12 @@ export const ExchangeForm = () => {
     if (isNaN(value)) return setValue('toAmount', savedToAmount)
 
     const valueWithTwoDecimalPlaces = value.toFixed(2)
-    setSavedToAmount(valueWithTwoDecimalPlaces)
     setValue('toAmount', valueWithTwoDecimalPlaces)
+    setSavedToAmount(valueWithTwoDecimalPlaces)
 
     const calculatedBaseAmount = (value / toCurrencyRate.rate).toFixed(2)
     setValue('baseAmount', calculatedBaseAmount)
+    setSavedBaseAmount(calculatedBaseAmount)
   }
 
   const onBaseCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -97,6 +99,7 @@ export const ExchangeForm = () => {
     const currentBaseCurrency = getValues('baseWallet')
     const currentToCurrency = getValues('toWallet')
     const currentToAmount = getValues('toAmount')
+    const currentBaseAmount = getValues('baseAmount')
 
     setValue('baseWallet', currentToCurrency)
     setValue('baseAmount', currentToAmount)
@@ -108,6 +111,8 @@ export const ExchangeForm = () => {
     setValue('toAmount', calculatedToAmount)
 
     setBaseCurrency(currentToCurrency)
+    setSavedBaseAmount(currentToAmount)
+    setSavedToAmount(currentBaseAmount)
   }
 
   const onCurrencyExchange = (data: FormSchema) => {
