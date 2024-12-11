@@ -33,15 +33,7 @@ export const ExchangeForm = () => {
   const { currencyTypes, accountBalances, setAccountBalances } = useAppContext()
   const { currencyRates } = usePollCurrencyRates(baseCurrency)
 
-  console.log('currencyRates---', currencyRates)
-
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    getValues,
-    reset: resetForm
-  } = useForm<FormSchema>({
+  const { register, setValue, handleSubmit, getValues } = useForm<FormSchema>({
     defaultValues: {
       baseWallet: baseCurrency,
       baseAmount: savedBaseAmount,
@@ -137,7 +129,8 @@ export const ExchangeForm = () => {
       [toCurrency]: toCurrencyNewBalance
     })
 
-    resetForm()
+    setValue('baseAmount', '0.00')
+    setValue('toAmount', '0.00')
   }
 
   return (
@@ -162,6 +155,7 @@ export const ExchangeForm = () => {
           className="h-10 w-[80px] p-2"
           {...register('baseWallet')}
           onChange={onBaseCurrencyChange}
+          aria-label="Exchange from wallet"
         >
           {currencyTypes.map((currencyType) => {
             return (
@@ -176,6 +170,7 @@ export const ExchangeForm = () => {
           className="h-10 w-[200px] border-2 border-black p-2"
           {...register('baseAmount')}
           onChange={onBaseAmountChange}
+          aria-label="baseAmount"
         />
       </div>
 
@@ -189,6 +184,7 @@ export const ExchangeForm = () => {
           className="h-10 w-[80px] p-2"
           {...register('toWallet')}
           onChange={onToCurrencyChange}
+          aria-label="Exchange to wallet"
         >
           {currencyTypes.map((currencyType) => {
             return (
@@ -203,6 +199,7 @@ export const ExchangeForm = () => {
           className="h-10 w-[200px] border-2 border-black p-2"
           {...register('toAmount')}
           onChange={onToAmountChange}
+          aria-label="toAmount"
         />
       </div>
 
