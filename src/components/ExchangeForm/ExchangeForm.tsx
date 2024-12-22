@@ -31,7 +31,7 @@ export const ExchangeForm = () => {
   const [toCurrency, setToCurrency] = useState<CurrencyType>('EUR')
   const [savedBaseAmount, setSavedBaseAmount] = useState('0.00')
   const [savedToAmount, setSavedToAmount] = useState('0.00')
-  const [isError, setIsError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const { currencyTypes, accountBalances, setAccountBalances } = useAppContext()
   const { currencyRates } = usePollCurrencyRates(baseCurrency)
 
@@ -116,7 +116,13 @@ export const ExchangeForm = () => {
   }
 
   const onCurrencyExchange = (data: FormSchema) => {
-    setIsError(false)
+    setErrorMessage('')
+
+    // return error is base wallet currency is the same is to wallet currency
+    if (data.baseWallet === data.toWallet)
+      return setErrorMessage(
+        'Both wallets are set to the same currency. Change one of the currency types if you wish to exchange money.'
+      )
 
     const baseAmount = data.baseAmount
     const baseCurrency = data.baseWallet
@@ -128,7 +134,10 @@ export const ExchangeForm = () => {
     const toCurrencyNewBalance = accountBalances[toCurrency] + Number(toAmount)
 
     // return error if insufficient balance to make transaction
-    if (baseCurrencyNewBalance < 0) return setIsError(true)
+    if (baseCurrencyNewBalance < 0)
+      return setErrorMessage(
+        'You have insufficient balance in your account to make this transaction'
+      )
 
     setAccountBalances({
       ...accountBalances,
@@ -230,10 +239,8 @@ export const ExchangeForm = () => {
         Exchange
       </button>
 
-      {isError && (
-        <p className="text-center text-red-500">
-          You have insufficient balance in your account to make this transaction
-        </p>
+      {errorMessage && (
+        <p className="text-center text-red-500">{errorMessage}</p>
       )}
     </form>
   )
