@@ -56,6 +56,13 @@ export const ExchangeForm = () => {
     return currencyRate.currency === getValues('toWallet')
   })[0]
 
+  const resetForm = () => {
+    setValue('baseAmount', '0.00')
+    setValue('toAmount', '0.00')
+    setSavedBaseAmount('0.00')
+    setSavedToAmount('0.00')
+  }
+
   const onBaseAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value)
     // if value cannot be converted to number return previously saved number
@@ -87,21 +94,13 @@ export const ExchangeForm = () => {
   const onBaseCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setBaseCurrency(e.target.value as CurrencyType)
     setValue('baseWallet', e.target.value as CurrencyType)
-
-    setValue('baseAmount', '0.00')
-    setValue('toAmount', '0.00')
-    setSavedBaseAmount('0.00')
-    setSavedToAmount('0.00')
+    resetForm()
   }
 
   const onToCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setToCurrency(e.target.value as CurrencyType)
     setValue('toWallet', e.target.value as CurrencyType)
-
-    setValue('baseAmount', '0.00')
-    setValue('toAmount', '0.00')
-    setSavedBaseAmount('0.00')
-    setSavedToAmount('0.00')
+    resetForm()
   }
 
   const onCurrencySwap = (e: MouseEvent<HTMLButtonElement>) => {
@@ -155,8 +154,7 @@ export const ExchangeForm = () => {
       [toCurrency]: toCurrencyNewBalance
     })
 
-    setValue('baseAmount', '0.00')
-    setValue('toAmount', '0.00')
+    resetForm()
   }
 
   return (
