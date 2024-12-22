@@ -5,7 +5,7 @@ import { ApiResponse, getCurrencyRates } from 'utils/getCurrencyRates'
 export const usePollCurrencyRates = (baseCurrency: CurrencyType) => {
   const [currencyRates, setCurrencyRates] = useState<ApiResponse>()
   const { currencyTypes } = useAppContext()
-  const POLLING_INTERVAL = 10000
+  const POLLING_INTERVAL = 10000 // 10 seconds
 
   useEffect(() => {
     const handleRatesData = async () => {
@@ -17,10 +17,10 @@ export const usePollCurrencyRates = (baseCurrency: CurrencyType) => {
     handleRatesData()
 
     // set interval for subsequent data requests
-    const timeoutId = setInterval(handleRatesData, POLLING_INTERVAL)
+    const intervalId = setInterval(handleRatesData, POLLING_INTERVAL)
 
     return () => {
-      clearInterval(timeoutId)
+      clearInterval(intervalId)
     }
   }, [currencyTypes, baseCurrency])
 
