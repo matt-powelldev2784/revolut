@@ -87,11 +87,21 @@ export const ExchangeForm = () => {
   const onBaseCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setBaseCurrency(e.target.value as CurrencyType)
     setValue('baseWallet', e.target.value as CurrencyType)
+
+    setValue('baseAmount', '0.00')
+    setValue('toAmount', '0.00')
+    setSavedBaseAmount('0.00')
+    setSavedToAmount('0.00')
   }
 
   const onToCurrencyChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setToCurrency(e.target.value as CurrencyType)
     setValue('toWallet', e.target.value as CurrencyType)
+
+    setValue('baseAmount', '0.00')
+    setValue('toAmount', '0.00')
+    setSavedBaseAmount('0.00')
+    setSavedToAmount('0.00')
   }
 
   const onCurrencySwap = (e: MouseEvent<HTMLButtonElement>) => {
